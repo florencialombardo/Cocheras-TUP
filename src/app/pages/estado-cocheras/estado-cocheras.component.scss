@@ -1,0 +1,47 @@
+.titulo {
+    font-family: Arial, sans-serif;
+    color: #f7941d; /* Color naranja */
+    text-align: center;
+}
+  
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    margin: 25px 0;
+    border: 1px solid #dddddd;
+}
+  
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #dddddd;
+}
+  
+.styled-table thead tr {
+    background-color: #f7941d; /* Color naranja */
+    color: #ffffff;
+}
+  
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+  
+.btn-accion {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+  
+.habilitar {
+    background-color: #28a745; /* Verde */
+}
+  
+.deshabilitar {
+    background-color: #dc3545; /* Rojo */
+} 
+  

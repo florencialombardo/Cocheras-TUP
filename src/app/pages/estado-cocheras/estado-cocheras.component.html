@@ -1,2 +1,40 @@
-<p>estado-cocheras works!</p>
-<a [routerLink]="['/login']">Cerrar Sesión</a>
+
+<button [routerLink]="['/login']">Cerrar Sesion</button>
+<h2 class="titulo">Cocheras Management</h2>
+<table class="styled-table">
+  <thead>
+    <tr>
+      <th>Número de cochera</th>
+      <th>Disponibilidad</th>
+      <th>Fecha de ingreso</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    @for (cochera of cocheras; track $index) {
+        <tr >
+            <td> {{cochera.number}} </td>
+            <td [ngClass]="{'habilitar': cochera.disponibilidad === 'Disponible'}"> {{cochera.disponibilidad}} </td>
+            <td> {{cochera.fechaIngreso}} </td>
+            <td>
+                <button (click)="toggleDisponibilidad($index)">
+                    {{ cochera.disponibilidad === 'Disponible' ? 'Deshabilitar' : 'Habilitar' }}
+                </button>
+                <button (click)="confirmdelete()">
+                  Eliminar
+                </button>
+               
+            </td>
+          </tr>
+    }
+    
+  </tbody>
+</table>
+<button (click)="agregarCochera()">Agregar Nueva Cochera</button>
+
+   
+
+  
+
+
