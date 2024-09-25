@@ -3,7 +3,7 @@
       <h1>Cocheras <span class="management">Management</span></h1>
     </div>
     <div class="login-box">
-      <form>
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
         <div class="form-group">
           <label for="username">Usuario</label>
           <input type="text" id="username" name="username" ngModel required>
@@ -15,7 +15,10 @@
         <p class="password-requirements">
           * Caracteres obligatorios: A-Z, a-z, 0-9, !&#64;#$%
         </p>
-        <button [routerLink]="['/estado-cocheras']" class="submit-btn">INGRESAR</button>
+        <button [disabled]="loginForm.invalid" class="submit-btn" type="submit">INGRESAR</button>
+        @if(errorLogin){
+          <p> Error en login </p>
+        }
       </form>
     </div>
   </div>

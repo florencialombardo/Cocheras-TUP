@@ -1,7 +1,7 @@
 export interface Cochera{
-    number: number;
-    disponibilidad: string;
-    fechaIngreso: string;
-    acciones: string;
+    id: number;
+    descripcion: string;
+    deshabilitada: number;
+    eliminada: number;
 
 }

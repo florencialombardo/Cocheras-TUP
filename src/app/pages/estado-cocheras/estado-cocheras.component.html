@@ -12,14 +12,14 @@
   </thead>
   <tbody>
 
-    @for (cochera of cocheras; track $index) {
+    @for (cochera of dataCocherasService.cocheras; track $index) {
         <tr >
-            <td> {{cochera.number}} </td>
-            <td [ngClass]="{'habilitar': cochera.disponibilidad === 'Disponible'}"> {{cochera.disponibilidad}} </td>
-            <td> {{cochera.fechaIngreso}} </td>
+            <td> {{cochera.id}} </td>
+            <td [ngClass]="{'habilitar': cochera.deshabilitada === 1}"> {{cochera.deshabilitada}} </td>
+            <td> monday </td>
             <td>
-                <button (click)="toggleDisponibilidad($index)">
-                    {{ cochera.disponibilidad === 'Disponible' ? 'Deshabilitar' : 'Habilitar' }}
+                <button (click)="confirmdeshabilitar($index)">
+                    {{ cochera.deshabilitada === 1 ? 0 : 1 }}
                 </button>
                 <button (click)="confirmdelete()">
                   Eliminar
@@ -32,6 +32,8 @@
   </tbody>
 </table>
 <button (click)="agregarCochera()">Agregar Nueva Cochera</button>
+<button (click)="getCocheras()">Get Cocheras</button>
+
 
    
 

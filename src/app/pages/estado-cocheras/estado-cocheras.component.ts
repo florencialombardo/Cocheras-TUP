@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Cochera } from '../../interfaces/cochera';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { DatacocherasService } from '../../services/datacocheras.service';
+import { DataAuthService } from '../../services/data-auth.service';
 
 @Component({
   selector: 'app-estado-cocheras',
@@ -13,65 +15,55 @@ import Swal from 'sweetalert2';
 })
 export class EstadoCocherasComponent {
 
-  cocheras: Cochera[] = [{
-    number: 1,
-    disponibilidad: 'Disponible',
-    fechaIngreso: 'monday',
-    acciones: '-',
-  },
-  {
-    number: 2,
-    disponibilidad: 'Disponible',
-    fechaIngreso: 'monday',
-    acciones: '-',
-  },
-  {
-    number: 3,
-    disponibilidad: 'Disponible',
-    fechaIngreso: 'monday',
-    acciones: '-',
-  }]
+  authService = inject(DataAuthService);
+  
+
+  cocheras: Cochera[] = []
+
+  dataCocherasService = inject(DatacocherasService)
 
   toggleDisponibilidad(index: number) {
-    if (this.cocheras[index].disponibilidad === 'Disponible') {
-      this.cocheras[index].disponibilidad = 'Deshabilitada';
+    if (this.cocheras[index].deshabilitada === 1) {
+      this.cocheras[index].deshabilitada = 0;
     } else {
-      this.cocheras[index].disponibilidad = 'Disponible';
+      this.cocheras[index].deshabilitada = 1;
     }
   }
 
-  ultimoNumero = this.cocheras[this.cocheras.length-1]?.number || 0;
+  ultimoNumero = this.cocheras[this.cocheras.length-1]?.id || 0;
   agregarCochera(){
     this.cocheras.push({
-      number: this.ultimoNumero + 1,
-      disponibilidad: 'Disponible',
-      fechaIngreso: '03/09/2024 18:45',
-      acciones: '-',
+      id: this.ultimoNumero + 1,
+      deshabilitada: 1,
+      descripcion: '03/09/2024 18:45',
+      eliminada: 1,
     })
     this.ultimoNumero++;
   }
 
   confirmdelete(){
     Swal.fire({
-      title: "Do you want to save the changes?",
-      showDenyButton: true,
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Save",
-      denyButtonText: `Don't save`
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-
-        Swal.fire("Saved!", "", "success");
-      } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
       }
     });
     
 
   }
 
-  confirmdeshabilitar(){
+  confirmdeshabilitar(index: number){
     Swal.fire({
       title: "Do you want to save the changes?",
       showDenyButton: true,
@@ -79,8 +71,9 @@ export class EstadoCocherasComponent {
       confirmButtonText: "Save",
       denyButtonText: `Don't save`
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
+      
       if (result.isConfirmed) {
+        this.toggleDisponibilidad(index);
 
         Swal.fire("Saved!", "", "success");
       } else if (result.isDenied) {
@@ -89,6 +82,8 @@ export class EstadoCocherasComponent {
     });
 
   }
+
+  getCocheras(){};
 
 
   
