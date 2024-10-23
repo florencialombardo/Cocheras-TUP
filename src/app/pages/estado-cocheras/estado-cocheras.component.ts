@@ -16,11 +16,13 @@ import { DataAuthService } from '../../services/data-auth.service';
 export class EstadoCocherasComponent {
 
   authService = inject(DataAuthService);
+  esAdmin = true;
   
 
   cocheras: Cochera[] = []
 
   dataCocherasService = inject(DatacocherasService)
+  borrarFila: any;
 
   toggleDisponibilidad(index: number) {
     if (this.cocheras[index].deshabilitada === 1) {
@@ -32,31 +34,29 @@ export class EstadoCocherasComponent {
 
   ultimoNumero = this.cocheras[this.cocheras.length-1]?.id || 0;
   agregarCochera(){
-    this.cocheras.push({
-      id: this.ultimoNumero + 1,
-      deshabilitada: 1,
-      descripcion: '03/09/2024 18:45',
-      eliminada: 1,
-    })
-    this.ultimoNumero++;
+    
   }
 
-  confirmdelete(){
+  confirmdelete(cocheraId: number){
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Estas seguro que deseas eliminar permanentemente esta cochera?",
+      text: "No vas a poder revertir este cambio",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
+      confirmButtonText: "Si, eliminar de todos modos",
+      cancelButtonText: "No eliminar"
+    }).then(async (result) => {
       if (result.isConfirmed) {
+        await this.borrarFila(cocheraId)
         Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
+          title: "Eliminada!",
+          text: "Su cochera fue eliminada",
           icon: "success"
         });
+      } else if (result.isDenied) {
+        Swal.fire("No se han guardado los cambios", "", "info");
       }
     });
     
@@ -83,7 +83,36 @@ export class EstadoCocherasComponent {
 
   }
 
+  abrirEstacionamiento(idCochera: number) {
+    const idUsuarioIngreso = "ADMIN"
+    Swal.fire({
+      title: "Abrir Cochera",
+      html: `<input type="text" id="patente" class="swal2-input" placeholder="Ingrese patente">`,
+      showCancelButton: true,
+      confirmButtonText: "Abrir",
+      cancelButtonText: "Cancelar",
+      preConfirm: () => {
+        const patenteInput = document.getElementById("patente") as HTMLInputElement
+        if (!patenteInput || !patenteInput.value) {
+          Swal.showValidationMessage("Por favor, ingrese una patente")
+          return false;
+        }
+        return { patente: patenteInput.value };
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { patente } = result.value;
+        await this.dataCocherasService.abrirEstacionamiento(patente, idUsuarioIngreso, idCochera);
+      }
+    })
+  }
+
+  
+
+
   getCocheras(){};
+
+  
 
 
   

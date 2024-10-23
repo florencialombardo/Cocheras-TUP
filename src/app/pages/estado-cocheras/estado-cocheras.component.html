@@ -15,13 +15,33 @@
     @for (cochera of dataCocherasService.cocheras; track $index) {
         <tr >
             <td> {{cochera.id}} </td>
+            <td>
+              @if (cochera.deshabilitada) {
+                  <button class="deshabilitada">
+                      Deshabilitada
+                  </button>
+              } @else if (!cochera.estacionamiento?.horaEgreso && cochera.estacionamiento?.horaIngreso) {
+                  <button>
+                      {{ cochera.estacionamiento?.patente }}
+                  </button>
+              } @else if (cochera.estacionamiento?.horaEgreso) {
+                  <button class="disponible" (click)="abrirEstacionamiento(cochera.id)">
+                      Desocupado
+                  </button>
+              } @else {
+                  <button class="disponible" (click)="abrirEstacionamiento(cochera.id)">
+                      Disponible
+                  </button>
+              }
+            </td>
+            <td>{{ cochera.descripcion }}</td>
             <td [ngClass]="{'habilitar': cochera.deshabilitada === 1}"> {{cochera.deshabilitada}} </td>
             <td> monday </td>
             <td>
                 <button (click)="confirmdeshabilitar($index)">
                     {{ cochera.deshabilitada === 1 ? 0 : 1 }}
                 </button>
-                <button (click)="confirmdelete()">
+                <button (click)="confirmdelete($index)">
                   Eliminar
                 </button>
                
@@ -31,7 +51,9 @@
     
   </tbody>
 </table>
+@if(esAdmin){
 <button (click)="agregarCochera()">Agregar Nueva Cochera</button>
+}
 <button (click)="getCocheras()">Get Cocheras</button>
 
 
