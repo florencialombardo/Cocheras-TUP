@@ -49,7 +49,7 @@ export class DatacocherasService {
 
   asociarEstacionamientosConCocheras() {
     this.cocheras = this.cocheras.map(cochera => {
-      const estacionamiento = this.estacionamientos.find(e => e.idCochera === cochera.id)
+      const estacionamiento = this.estacionamientos.find(e => e.idCochera === cochera.id && !e.horaEgreso)
       return {...cochera, estacionamiento}
     });
     console.log(this.cocheras)
@@ -57,24 +57,31 @@ export class DatacocherasService {
 
   ultimoNumero = this.cocheras[this.cocheras.length-1]?.id || 0;
 
-  async agregarCochera(){
-
-    const cochera = {descripcion: "Agregada por WebApi"};
-
-    const res = await fetch(environment.API_URL+'cocheras',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: 'Bearer '+this.authService.usuario?.token
-      },
-      body: JSON.stringify(cochera)
-    })
-    if(res.status !== 200) {
-      console.log("Error añ intentar crear nueva cochera")
-    } else {
-      console.log("Creacion exitosa")
-    };
-    
+  async agregarCochera(descripcion: string): Promise<Cochera | null> {
+    const cochera = { descripcion };
+  
+    try {
+      const res = await fetch(environment.API_URL + 'cocheras', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + this.authService.usuario?.token
+        },
+        body: JSON.stringify(cochera)
+      });
+  
+      if (!res.ok) {
+        console.log("Error al intentar crear nueva cochera");
+        return null;
+      }
+  
+      console.log("Creación exitosa");
+      await this.loadData(); // Refresh the data
+      return await res.json(); // Return the new cochera
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+      return null;
+    }
   }
 
   async borrarFila(index:number){

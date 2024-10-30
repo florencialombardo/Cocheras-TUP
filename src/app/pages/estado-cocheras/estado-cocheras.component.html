@@ -1,6 +1,5 @@
 
-<button [routerLink]="['/login']">Cerrar Sesion</button>
-<h2 class="titulo">Cocheras Management</h2>
+
 <table class="styled-table">
   <thead>
     <tr>
@@ -17,31 +16,27 @@
             <td> {{cochera.id}} </td>
             <td>
               @if (cochera.deshabilitada) {
-                  <button class="deshabilitada">
+                  <button class="deshabilitada status-button status-disabled">
                       Deshabilitada
                   </button>
               } @else if (!cochera.estacionamiento?.horaEgreso && cochera.estacionamiento?.horaIngreso) {
-                  <button>
+                  <button >
                       {{ cochera.estacionamiento?.patente }}
                   </button>
-              } @else if (cochera.estacionamiento?.horaEgreso) {
-                  <button class="disponible" (click)="abrirEstacionamiento(cochera.id)">
-                      Desocupado
-                  </button>
               } @else {
-                  <button class="disponible" (click)="abrirEstacionamiento(cochera.id)">
+                  <button type="submit" class="disponible, submit-btn" (click)="abrirEstacionamiento(cochera.id)">
                       Disponible
                   </button>
               }
             </td>
             <td>{{ cochera.descripcion }}</td>
-            <td [ngClass]="{'habilitar': cochera.deshabilitada === 1}"> {{cochera.deshabilitada}} </td>
-            <td> monday </td>
+            
+            
             <td>
                 <button (click)="confirmdeshabilitar($index)">
                     {{ cochera.deshabilitada === 1 ? 0 : 1 }}
                 </button>
-                <button (click)="confirmdelete($index)">
+                <button (click)="confirmdelete($index)" type="submit" class="disponible, submit-btn">
                   Eliminar
                 </button>
                
@@ -52,9 +47,9 @@
   </tbody>
 </table>
 @if(esAdmin){
-<button (click)="agregarCochera()">Agregar Nueva Cochera</button>
+<button (click)="agregarCochera()" class="submit-btn" type="submit">Agregar Nueva Cochera</button>
 }
-<button (click)="getCocheras()">Get Cocheras</button>
+
 
 
    

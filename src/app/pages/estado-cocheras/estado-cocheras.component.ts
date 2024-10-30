@@ -34,7 +34,26 @@ export class EstadoCocherasComponent {
 
   ultimoNumero = this.cocheras[this.cocheras.length-1]?.id || 0;
   agregarCochera(){
-    
+    console.log('Agregar cochera button clicked');
+    Swal.fire({
+      title: 'Agregar Nueva Cochera',
+      input: 'text',
+      inputLabel: 'Descripción',
+      inputPlaceholder: 'Ingrese la descripción de la cochera',
+      showCancelButton: true,
+      confirmButtonText: 'Agregar',
+      cancelButtonText: 'Cancelar',
+      
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const nuevaCochera = await this.dataCocherasService.agregarCochera(result.value);
+        if (nuevaCochera) {
+          Swal.fire('Éxito', 'Cochera agregada correctamente', 'success');
+        } else {
+          Swal.fire('Error', 'No se pudo agregar la cochera', 'error');
+        }
+      }
+    });
   }
 
   confirmdelete(cocheraId: number){
@@ -65,19 +84,19 @@ export class EstadoCocherasComponent {
 
   confirmdeshabilitar(index: number){
     Swal.fire({
-      title: "Do you want to save the changes?",
+      title: "Deshabilitar cochera?",
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: "Save",
-      denyButtonText: `Don't save`
+      confirmButtonText: "Si",
+      denyButtonText: `No`
     }).then((result) => {
       
       if (result.isConfirmed) {
         this.toggleDisponibilidad(index);
 
-        Swal.fire("Saved!", "", "success");
+        Swal.fire("Cochera Deshabilitada!", "", "success");
       } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
+        Swal.fire("Cambio no guardado", "", "info");
       }
     });
 
@@ -110,7 +129,7 @@ export class EstadoCocherasComponent {
   
 
 
-  getCocheras(){};
+  
 
   
 

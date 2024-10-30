@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DataEstacionamientosService } from '../../services/data-estacionamientos.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-reportes',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './reportes.component.html',
   styleUrl: './reportes.component.scss'
 })
 export class ReportesComponent {
+
+  dataEstacionamientoService = inject(DataEstacionamientosService)
 
 }
