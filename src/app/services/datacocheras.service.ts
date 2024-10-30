@@ -84,10 +84,10 @@ export class DatacocherasService {
     }
   }
 
-  async borrarFila(index:number){
+  async confirmdelete(id:number){
     const cochera = {"descripcion": "Agregada por WebApi"};
 
-    const res = await fetch(environment.API_URL+`cocheras/${index}`,{
+    const res = await fetch(environment.API_URL+`cocheras/${id}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +127,25 @@ export class DatacocherasService {
       console.log("Creacion de estacionamiento exitoso")
       this.loadData()
     };
-  }  
+  }
+  
+  async cerrarEstacionamiento(patente: string, idUsuarioEgreso: string) {
+    const body = {patente, idUsuarioEgreso};
+    const res = await fetch(environment.API_URL+'estacionamientos/cerrar',{
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization:'Bearer '+localStorage.getItem("authToken")
+      },
+      body: JSON.stringify(body)
+    })
+    if(res.status !== 200) {
+      console.log("Error en el cerrado del estacionamiento")
+    } else {
+      console.log("Cerrado del estacionamiento exitoso")
+      this.loadData();
+    };    
+  }
 
   
 }

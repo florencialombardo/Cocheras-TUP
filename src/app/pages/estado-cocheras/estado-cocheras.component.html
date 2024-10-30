@@ -20,7 +20,7 @@
                       Deshabilitada
                   </button>
               } @else if (!cochera.estacionamiento?.horaEgreso && cochera.estacionamiento?.horaIngreso) {
-                  <button >
+                  <button (click)="cerrarEstacionamiento(cochera)">
                       {{ cochera.estacionamiento?.patente }}
                   </button>
               } @else {
@@ -36,7 +36,7 @@
                 <button (click)="confirmdeshabilitar($index)">
                     {{ cochera.deshabilitada === 1 ? 0 : 1 }}
                 </button>
-                <button (click)="confirmdelete($index)" type="submit" class="disponible, submit-btn">
+                <button (click)="borrarFila(cochera.id)" type="submit" class="disponible, submit-btn">
                   Eliminar
                 </button>
                
